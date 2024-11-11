@@ -1,7 +1,7 @@
 import pygame
 import serial
 
-# Configuração da porta serial (substitua 'COM3' pela correta)
+# Configuração da porta serial
 arduino = serial.Serial('COM3', 9600)  # Para Windows
 # arduino = serial.Serial('/dev/ttyUSB0', 9600)  # Para Linux/Mac
 
