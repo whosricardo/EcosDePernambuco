@@ -2,8 +2,10 @@
 const int ldrPins[2] = {A0, A1}; // Pinos analógicos dos LDRs das direções
 const int langPins[3] = {A8, A9, A10}; // Pinos analógicos dos LDRs de idioma
 const int threshold = 700; // Limite de leitura do LDR para detectar luz
+const unsigned long requiredLightDuration = 2000; // Tempo necessário para ativar (em milissegundos)
 int previousState[2] = {0, 0}; // Estado anterior dos LDRs de direção
 int currentLang = -1; // Idioma atualmente selecionado (-1 = nenhum)
+unsigned long lightStartTime[2] = {0, 0}; // Tempo que a luz começou a ser detectada
 
 void setup() {
     Serial.begin(9600); // Inicializa a comunicação serial
@@ -35,15 +37,21 @@ void loop() {
         Serial.println(currentLang); // Envia "LANG_0", "LANG_1", ou "LANG_2"
     }
 
-    // Detecta direção (independente dos idiomas)
+    // Detecta direção com tempo de luz constante
     for (int i = 0; i < 2; i++) {
         int ldrValue = analogRead(ldrPins[i]); // Lê o valor do LDR de direção
-        if (ldrValue > threshold && previousState[i] == 0) {
-            Serial.print("AUDIO_");
-            Serial.println(i + 1); // Envia "AUDIO_1", "AUDIO_2", etc.
-            previousState[i] = 1; // Atualiza o estado para evitar repetições
-        } else if (ldrValue <= threshold && previousState[i] == 1) {
-            previousState[i] = 0; // Reseta o estado se o LDR não estiver mais iluminado
+
+        if (ldrValue > threshold) {
+            if (lightStartTime[i] == 0) {
+                lightStartTime[i] = millis(); // Registra o momento em que a luz começou
+            } else if (millis() - lightStartTime[i] >= requiredLightDuration && previousState[i] == 0) {
+                Serial.print("AUDIO_");
+                Serial.println(i + 1); // Envia "AUDIO_1", "AUDIO_2", etc.
+                previousState[i] = 1; // Atualiza o estado para evitar repetições
+            }
+        } else {
+            lightStartTime[i] = 0; // Reseta o temporizador se a luz não for mais detectada
+            previousState[i] = 0; // Reseta o estado para permitir novas ativações
         }
     }
 
