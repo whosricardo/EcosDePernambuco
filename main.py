@@ -31,11 +31,16 @@ def tocar_audio(caminho_audio):
     if not os.path.exists(caminho_audio):
         print(f"Erro: Arquivo {caminho_audio} não encontrado.")
         return
+    
+    # Para o áudio atual antes de tocar o novo
+    if pygame.mixer.music.get_busy():
+        print("Parando áudio atual...")
+        pygame.mixer.music.stop()
+    
+    # Carrega e toca o novo áudio
     pygame.mixer.music.load(caminho_audio)
     pygame.mixer.music.play()
     print(f"Tocando: {caminho_audio}")
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
 
 # Loop principal para leitura da porta serial
 while True:
