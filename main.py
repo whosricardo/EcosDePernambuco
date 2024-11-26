@@ -1,31 +1,39 @@
 import pygame
 import serial
+import os
 
 # Configuração da porta serial
-arduino = serial.Serial('COM3', 9600)  # Para Windows
-# arduino = serial.Serial('/dev/ttyUSB0', 9600)  # Para Linux/Mac
+arduino = serial.Serial('/dev/cu.usbmodem1301', 9600)  # Ajuste para sua plataforma
 
 # Inicializa o mixer de áudio
 pygame.mixer.init()
 
+# Idioma atual (0 = Português, 1 = Inglês, 2 = Espanhol)
+idioma_atual = 0
+
 # Dicionário para mapear os comandos aos áudios
 audios = {
-    "AUDIO_1": "audios/audio1.mp3",
-    "AUDIO_2": "audios/audio2.mp3",
-    "AUDIO_3": "audios/audio3.mp3",
-    "AUDIO_4": "audios/audio4.mp3",
-    "AUDIO_5": "audios/audio5.mp3",
-    "AUDIO_6": "audios/audio6.mp3",
-    "AUDIO_7": "audios/audio7.mp3",
-    "AUDIO_8": "audios/audio8.mp3",
+    0: {  # Português
+        "AUDIO_1": "audios/pt_audio1.mp3",
+        "AUDIO_2": "audios/pt_audio2.mp3",
+    },
+    1: {  # Inglês
+        "AUDIO_1": "audios/en_audio1.mp3",
+        "AUDIO_2": "audios/en_audio2.mp3",
+    },
+    2: {  # Espanhol
+        "AUDIO_1": "audios/es_audio1.mp3",
+        "AUDIO_2": "audios/es_audio2.mp3",
+    },
 }
 
 def tocar_audio(caminho_audio):
-    # Carrega o áudio
+    if not os.path.exists(caminho_audio):
+        print(f"Erro: Arquivo {caminho_audio} não encontrado.")
+        return
     pygame.mixer.music.load(caminho_audio)
-    # Reproduz o áudio
     pygame.mixer.music.play()
-    # Aguarda até o áudio terminar
+    print(f"Tocando: {caminho_audio}")
     while pygame.mixer.music.get_busy():
         pygame.time.Clock().tick(10)
 
@@ -35,10 +43,21 @@ while True:
         comando = arduino.readline().decode('utf-8').strip()
         print(f"Comando recebido: {comando}")
 
-        # Verifica se o comando corresponde a um áudio
-        if comando in audios:
-            caminho_audio = audios[comando]
-            print(f"Tocando: {caminho_audio}")
-            tocar_audio(caminho_audio)
+        # Processa comando de idioma
+        if comando.startswith("LANG_"):
+            try:
+                idioma_atual = int(comando.split("_")[1])
+                print(f"Idioma alterado para: {['Português', 'Inglês', 'Espanhol'][idioma_atual]}")
+            except (ValueError, IndexError):
+                print("Comando de idioma inválido recebido.")
+
+        # Processa comando de áudio
+        elif comando.startswith("AUDIO_"):
+            if comando in audios[idioma_atual]:
+                tocar_audio(audios[idioma_atual][comando])
+            else:
+                print(f"Áudio não encontrado para o comando: {comando}")
+
+        # Comando desconhecido
         else:
             print(f"Comando desconhecido: {comando}")
