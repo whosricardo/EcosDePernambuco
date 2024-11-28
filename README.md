@@ -81,7 +81,7 @@
 ## Estrutura de Arquivos
 
 ```
-Ecos-de-Pernambuco/
+EcosDePernambuco/
 ├── arduino.ino               # Código para Arduino
 ├── main.py                # Script Python
 ├── audios/                # Arquivos de áudio
