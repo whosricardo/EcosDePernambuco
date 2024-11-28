@@ -16,14 +16,33 @@ audios = {
     0: {  # Português
         "AUDIO_1": "audios/pt_audio1.mp3",
         "AUDIO_2": "audios/pt_audio2.mp3",
+        "AUDIO_3": "audios/pt_audio3.mp3",
+        "AUDIO_4": "audios/pt_audio4.mp3",
+        "AUDIO_5": "audios/pt_audio5.mp3",
+        "AUDIO_6": "audios/pt_audio6.mp3",
+        "AUDIO_7": "audios/pt_audio7.mp3",
+        "AUDIO_8": "audios/pt_audio8.mp3",
+
     },
     1: {  # Inglês
         "AUDIO_1": "audios/en_audio1.mp3",
         "AUDIO_2": "audios/en_audio2.mp3",
+        "AUDIO_3": "audios/en_audio3.mp3",
+        "AUDIO_4": "audios/en_audio4.mp3",
+        "AUDIO_5": "audios/en_audio5.mp3",
+        "AUDIO_6": "audios/en_audio6.mp3",
+        "AUDIO_7": "audios/en_audio7.mp3",
+        "AUDIO_8": "audios/en_audio8.mp3",
     },
     2: {  # Espanhol
         "AUDIO_1": "audios/es_audio1.mp3",
         "AUDIO_2": "audios/es_audio2.mp3",
+        "AUDIO_3": "audios/es_audio3.mp3",
+        "AUDIO_4": "audios/es_audio4.mp3",
+        "AUDIO_5": "audios/es_audio5.mp3",
+        "AUDIO_6": "audios/es_audio6.mp3",
+        "AUDIO_7": "audios/es_audio7.mp3",
+        "AUDIO_8": "audios/es_audio8.mp3",
     },
 }
 
