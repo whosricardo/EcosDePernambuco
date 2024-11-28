@@ -103,4 +103,4 @@ Este projeto está licenciado sob a [MIT License](LICENSE). Você é livre para 
 
 ---
 
-\*\*Autores\*\*: Equipe Ecos de Pernambuco 
+**Autores**: Equipe Ecos de Pernambuco 
